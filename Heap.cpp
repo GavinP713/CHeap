@@ -24,9 +24,14 @@ int Heap::getRightChild(int index) {
 }
 
 void Heap::add(int number) {
+  cout << "size=" << size << ", last=" << last << endl;
+  
   // add number to end
   heap[last] = number;
+  
+  // update size and last position
   size++;
+  last++;
 
   // sort it up
   sortUp(last);
@@ -37,7 +42,7 @@ void Heap::remove() {
   heap[0] = heap[last];
 
   // clear last node and set new last to the parent
-  //heap[last] = 0;
+  heap[last] = 0;
   last = getParent(last);
   size--;
 
@@ -51,11 +56,16 @@ void Heap::removeAll() {
   }
 }
 
+// sort highest values to top
 void Heap::sortUp(int index) {
   int value = heap[index];
   int parentIndex = getParent(index);
   int parentValue = heap[getParent(index)];
 
+  // at root
+  if (index == 0) return;
+
+  // sort up
   if (parentValue < value) {
     // swap parent and child
     heap[index] = parentValue;
@@ -70,8 +80,9 @@ void Heap::sortDown(int index) {
   
 }
 
-void Heap::print() {
-  for (int i = 0; i < 100; i++) {
-    cout << i << ": " <<  heap[i] << endl;
+void Heap::print(int pos, int depth) {
+  if (getLeftChild(pos) < size) {
+    // recursion at this point, return here once nulls are reached
+    print(getLeftChild(pos), depth + 1);
   }
 }
