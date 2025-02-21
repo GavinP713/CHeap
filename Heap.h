@@ -4,14 +4,14 @@
 class Heap {
  public:
   int size;
-  int last;
+  int last = 1;
   
-  Heap(int size);
+  Heap(int _maxSize);
 
   int getRoot();
   int getParent(int index);
-  int getLeftChild(int index);
-  int getRightChild(int index);
+  int getLeft(int index);
+  int getRight(int index);
 
   void add(int number);
   void remove();
@@ -20,9 +20,9 @@ class Heap {
   void sortUp(int index);
   void sortDown(int index);
 
-  void print();
+  void print(int pos, int depth);
  private:
-  int heap[100];
+  int heap[101];
 };
 
 #endif 

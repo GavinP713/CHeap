@@ -3,28 +3,28 @@
 #include "Heap.h"
 using namespace std;
 
-Heap::Heap(int size) {
+Heap::Heap(int _maxSize) {
   
 }
 
 int Heap::getRoot() {
-  return heap[0];
+  return heap[1];
 }
 
 int Heap::getParent(int index) {
   return floor(index / 2);
 }
 
-int Heap::getLeftChild(int index) {
+int Heap::getLeft(int index) {
   return index * 2;
 }
 
-int Heap::getRightChild(int index) {
+int Heap::getRight(int index) {
   return index * 2 + 1;
 }
 
 void Heap::add(int number) {
-  cout << "size=" << size << ", last=" << last << endl;
+  //cout << "size=" << size << ", last=" << last << endl;
   
   // add number to end
   heap[last] = number;
@@ -39,7 +39,7 @@ void Heap::add(int number) {
 
 void Heap::remove() {
   // set root to lowest
-  heap[0] = heap[last];
+  heap[1] = heap[last];
 
   // clear last node and set new last to the parent
   heap[last] = 0;
@@ -57,32 +57,59 @@ void Heap::removeAll() {
 }
 
 // sort highest values to top
-void Heap::sortUp(int index) {
-  int value = heap[index];
-  int parentIndex = getParent(index);
-  int parentValue = heap[getParent(index)];
+void Heap::sortUp(int pos) {
+  if (pos == 0) return; // at root
+    
+  int value = heap[pos]; // value always zero !!! error
+  int parentPos = getParent(pos);
+  int parentValue = heap[getParent(pos)];
 
-  // at root
-  if (index == 0) return;
-
+  cout << parentValue << endl;
+  cout << value << endl;
+  
   // sort up
   if (parentValue < value) {
+    cout << "aaaaa" << endl;
     // swap parent and child
-    heap[index] = parentValue;
-    heap[parentIndex] = value;
+    heap[pos] = parentValue;
+    heap[parentPos] = value;
 
-    // recursion
-    sortUp(parentIndex);
+    // repeat
+    sortUp(parentPos);
   }
 }
 
-void Heap::sortDown(int index) {
+void Heap::sortDown(int pos) {
+  if (pos > size) return; // reached a leaf
+
+  // convenient reference
+  int value = heap[pos];
+  int leftValue = heap[getLeft(pos)];
+  int rightValue = heap[getRight(pos)];
   
+  // a child is larger than the current value
+  if ((leftValue || rightValue) > value) {
+    if (leftValue > rightValue) sortDown(getLeft(pos)); // swap with left child
+    else sortDown(getRight(pos)); // swap with right child
+  }
 }
 
 void Heap::print(int pos, int depth) {
-  if (getLeftChild(pos) < size) {
-    // recursion at this point, return here once nulls are reached
-    print(getLeftChild(pos), depth + 1);
+  //cout << getRight(pos) << endl;
+  //cout << last << endl;
+
+  //  return;
+  if (getRight(pos) < last) { // check for null 
+    print(getRight(pos), depth + 1);
+  }
+  
+  for (int a = 0; a < depth; a++) {
+    cout << '\t';
+  }
+  
+  cout << heap[pos] << endl;
+  
+  if (getLeft(pos) < last) { // check for null
+    print(getLeft(pos), depth + 1);
   }
 }

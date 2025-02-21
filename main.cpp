@@ -8,7 +8,7 @@ int main() {
   heap->add(4);
   heap->add(10);
   heap->add(2);
-  heap->print();
+  heap->print(1, 0);
   
   return 1;
 }
