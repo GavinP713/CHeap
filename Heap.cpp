@@ -3,10 +3,6 @@
 #include "Heap.h"
 using namespace std;
 
-Heap::Heap(int _maxSize) {
-  
-}
-
 int Heap::getRoot() {
   return heap[1];
 }
@@ -28,26 +24,28 @@ void Heap::add(int number) {
   
   // add number to end
   heap[last] = number;
+
+  // sort it up
+  sortUp(last);
   
   // update size and last position
   size++;
   last++;
-
-  // sort it up
-  sortUp(last);
 }
 
 void Heap::remove() {
+  cout << heap[1] << endl;
+
   // set root to lowest
-  heap[1] = heap[last];
+  heap[1] = heap[last - 1];
 
   // clear last node and set new last to the parent
   heap[last] = 0;
-  last = getParent(last);
+  last--;
   size--;
 
   // sort it down
-  sortDown(0);
+  sortDown(1);
 }
 
 void Heap::removeAll() {
@@ -58,18 +56,14 @@ void Heap::removeAll() {
 
 // sort highest values to top
 void Heap::sortUp(int pos) {
-  if (pos == 0) return; // at root
+  if (pos == 1) return; // at root
     
   int value = heap[pos]; // value always zero !!! error
   int parentPos = getParent(pos);
   int parentValue = heap[getParent(pos)];
-
-  cout << parentValue << endl;
-  cout << value << endl;
   
   // sort up
   if (parentValue < value) {
-    cout << "aaaaa" << endl;
     // swap parent and child
     heap[pos] = parentValue;
     heap[parentPos] = value;
@@ -82,15 +76,25 @@ void Heap::sortUp(int pos) {
 void Heap::sortDown(int pos) {
   if (pos > size) return; // reached a leaf
 
-  // convenient reference
+  // convenient references
   int value = heap[pos];
   int leftValue = heap[getLeft(pos)];
   int rightValue = heap[getRight(pos)];
   
   // a child is larger than the current value
-  if ((leftValue || rightValue) > value) {
-    if (leftValue > rightValue) sortDown(getLeft(pos)); // swap with left child
-    else sortDown(getRight(pos)); // swap with right child
+  if (leftValue > value || rightValue > value) {
+    // swap with left child
+    if (leftValue > rightValue) { 
+      heap[pos] = leftValue;
+      heap[getLeft(pos)] = value;
+      sortDown(getLeft(pos));
+    }
+    // swap with right child
+    else { 
+      heap[pos] = rightValue;
+      heap[getRight(pos)] = value;
+      sortDown(getRight(pos));
+    }
   }
 }
 

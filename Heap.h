@@ -6,8 +6,6 @@ class Heap {
   int size;
   int last = 1;
   
-  Heap(int _maxSize);
-
   int getRoot();
   int getParent(int index);
   int getLeft(int index);
