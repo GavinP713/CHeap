@@ -49,7 +49,7 @@ void Heap::remove() {
 }
 
 void Heap::removeAll() {
-  while (size > 0) {
+  while (heap[1] != 0) {
     remove();
   }
 }
